@@ -52,6 +52,17 @@ for (let i = 0; i < numBtns.length; i++) {
 }
 
 acBtn.addEventListener("click", function() {
+    content = displayEl.textContent;
+    if (isNaN(Number(content.charAt(content.length - 2)))){
+        content = displayEl.textContent.slice(0, displayEl.textContent.length - 3);
+    } else if (!isNaN(Number(content.charAt(content.length - 1)))) {
+        content = displayEl.textContent.slice(0, displayEl.textContent.length - 1);
+    }
+    displayEl.textContent = content;
+    opState = true;
+})
+
+acBtn.addEventListener("dblclick", function() {
     negState = false;
     opState = false;
     opClickedOnce = false;

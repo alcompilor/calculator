@@ -65,6 +65,11 @@ for (let i = 0; i < operationBtns.length; i++) {
             opState = false;
             negState = false;
             opClickedOnce = true;
+        } else if (operationBtns[i].textContent !== "," && opState && opClickedOnce) {
+            equalFunc();
+            display(` ${String(operationBtns[i].textContent)} `);
+            opState = false;
+            opClickedOnce = true;
         } else if (operationBtns[i].textContent === "," && decState) {
             display(".");
             decState = false;
@@ -80,10 +85,16 @@ negBtn.addEventListener("click", function() {
 })
 
 percentBtn.addEventListener("click", function() {
+    content = displayEl.textContent;
+    if (content.includes("×") || content.includes("-") || content.includes("+") || content.includes("÷")) {
+        equalFunc();
+    }
     displayEl.textContent = percent(Number(displayEl.textContent));
 })
 
-equalBtn.addEventListener("click", function() {
+equalBtn.addEventListener("click", equalFunc);
+
+function equalFunc() {
     let content = displayEl.textContent;
     let firstNum = "";
     let secondNum = "";
@@ -98,7 +109,6 @@ equalBtn.addEventListener("click", function() {
             } else {
                 spaceIndex = i;
                 opSymbol = content.charAt(i+1);
-                console.log(opSymbol)
                 break
             }
         }
@@ -117,4 +127,4 @@ equalBtn.addEventListener("click", function() {
     }
     
     opClickedOnce = false;
-})
+}

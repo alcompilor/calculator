@@ -18,6 +18,8 @@ let opSymbols = {
     "÷": "divide",
 };
 
+let keyArray = ["1","2","3","4","5","6","7","8","9","0"];
+
 function calc(method, ...values) {
     let sumValue = arguments[1];
     for (let i = 2; i < arguments.length; i++) {
@@ -42,6 +44,30 @@ function display(value) {
     displayEl.textContent += `${value}`;
 }
 
+function singleClear() {
+    content = displayEl.textContent;
+    if (isNaN(Number(content.charAt(content.length - 2)))){
+        content = displayEl.textContent.slice(0, displayEl.textContent.length - 3);
+    } else if (!isNaN(Number(content.charAt(content.length - 1)))) {
+        content = displayEl.textContent.slice(0, displayEl.textContent.length - 1);
+    }
+    displayEl.textContent = content;
+    opState = true;
+}
+
+document.addEventListener("keydown", function() {
+    if (window.event.key in keyArray) {
+        opState = true;
+        negState = true;
+        decState = true;
+        display(String(window.event.key));
+    } else if (window.event.key === "Backspace") {
+        singleClear();
+    } else if (window.event.key === "Enter") {
+        equalFunc();
+    }
+});
+
 for (let i = 0; i < numBtns.length; i++) {
     numBtns[i].addEventListener("click", function() {
         opState = true;
@@ -51,16 +77,8 @@ for (let i = 0; i < numBtns.length; i++) {
     })
 }
 
-acBtn.addEventListener("click", function() {
-    content = displayEl.textContent;
-    if (isNaN(Number(content.charAt(content.length - 2)))){
-        content = displayEl.textContent.slice(0, displayEl.textContent.length - 3);
-    } else if (!isNaN(Number(content.charAt(content.length - 1)))) {
-        content = displayEl.textContent.slice(0, displayEl.textContent.length - 1);
-    }
-    displayEl.textContent = content;
-    opState = true;
-})
+
+acBtn.addEventListener("click", singleClear);
 
 acBtn.addEventListener("dblclick", function() {
     negState = false;
